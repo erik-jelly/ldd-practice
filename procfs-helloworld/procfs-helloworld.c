@@ -14,7 +14,8 @@ static char msg[255];
 
 //implemented read proc_op
 static ssize_t mymodule_read(struct file *file, char __user *ubuf, size_t ubuf_len, loff_t *offset){
-	printk("PROC_FS: mymodule_read\n");
+    pr_info("PROC_FS: mymodule_read\n");
+    //printk(KERN_INFO "PROC_FS: mymodule_read\n");
 
 	int not_copied, to_copy, delta;
 
@@ -34,7 +35,8 @@ static ssize_t mymodule_read(struct file *file, char __user *ubuf, size_t ubuf_l
 //implemented write proc_op
 //must return size of input to prevent repeated/infinite attempts at writing
 static ssize_t mymodule_write(struct file *file, const char __user *ubuf, size_t ubuf_len, loff_t *offset){
-    printk("PROC_FS: mymodule_write\n");
+    pr_info("PROC_FS: mymodule_write\n");
+    //printk(KERN_INFO "PROC_FS: mymodule_write\n");
 
     int not_copied, to_copy, delta;
 
@@ -61,7 +63,8 @@ const struct proc_ops procfs_ops = {
 
 //constructor function for kernel module
 static int mymodule_init(void){
-	printk("PROC_FS: mymodule_init enter\n");
+    pr_debug("PROC_FS: mymodule_init enter\n");
+	//printk(KERN_DEBUG "PROC_FS: mymodule_init enter\n");
 
 	//creating parent folder, if unsuccessful return error
 	// proc_folder = proc_mkdir("testing", NULL);
@@ -76,7 +79,8 @@ static int mymodule_init(void){
 	proc_file = proc_create("mymodule", 0666, NULL, &procfs_ops);
 
 	if (proc_file == NULL){
-		printk("PROC_FS: mymodule_init - failed to create procfs file.\n");
+	    pr_err("PROC_FS: mymodule_init - failed to create procfs file.\n");
+		//printk(KERN_ERR "PROC_FS: mymodule_init - failed to create procfs file.\n");
 		//proc_remove(proc_folder);
 		return -ENOMEM;
 	}
@@ -84,7 +88,8 @@ static int mymodule_init(void){
 	memset(msg, 0, sizeof(msg));
 	strcpy(msg, "default message\n");
 
-	printk("PROC_FS: mymodule_init exit\n");
+	pr_debug("PROC_FS: mymodule_init exit\n");
+	//printk(KERN_DEBUG "PROC_FS: mymodule_init exit\n");
 
 	return 0;
 
@@ -92,14 +97,16 @@ static int mymodule_init(void){
 
 //destructor function for kernel module
 static void mymodule_exit(void){
-	printk("PROC_FS: mymodule_exit enter\n");
+    pr_debug("PROC_FS: mymodule_exit enter\n");
+    //printk(KERN_DEBUG "PROC_FS: mymodule_exit enter\n");
 
 	//removing file entity
 	// if parent folder exists, you can remove just the parent folder and it will
 	// recursively remove everything inside
 	proc_remove(proc_file);
 
-	printk("PROC_FS: mymodule_exit exit\n");
+	pr_debug("PROC_FS: mymodule_exit exit\n");
+	//printk(KERN_DEBUG "PROC_FS: mymodule_exit exit\n");
 }
 
 module_init(mymodule_init);
