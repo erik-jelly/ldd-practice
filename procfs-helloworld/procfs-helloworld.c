@@ -1,7 +1,10 @@
+#define DEBUG
+
 #include <asm-generic/errno-base.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/proc_fs.h>
+
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Erik Jelezarov");

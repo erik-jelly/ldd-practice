@@ -1,3 +1,5 @@
+#define DEBUG
+
 #include <asm-generic/errno-base.h>
 #include <linux/init.h>
 #include <linux/module.h>
